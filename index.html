@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassGuard Pro — Advanced Password Intelligence</title>
+  <meta name="description" content="PassGuard Pro is an advanced password strength analyzer and generator using cryptographic entropy analysis and pattern detection.">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="nav-logo">PASS<span>GUARD</span> PRO</a>
+      <div class="nav-links">
+        <a href="javascript:void(0)" onclick="switchTab('analyzer')">Analyzer</a>
+        <a href="javascript:void(0)" onclick="switchTab('generator')">Generator</a>
+        <a href="javascript:void(0)" onclick="switchTab('cracker')">Cracker Demo</a>
+        <a href="javascript:void(0)" onclick="switchTab('tips')">Tips</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="logo-badge">Next-Gen Cybersecurity</div>
+    <h1>Stop Weak Passwords.<br>Secure Your Future.</h1>
+    <p>Advanced security intelligence & cryptographic analysis. Measure entropy, detect patterns, and generate unbreakable passphrases in seconds.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="window.scrollTo({top: document.getElementById('analyzer').offsetTop - 100, behavior: 'smooth'})">Get Started Free</button>
+      <button class="btn-secondary" onclick="window.scrollTo({top: document.getElementById('tips').offsetTop - 100, behavior: 'smooth'})">Learn More</button>
+    </div>
+  </section>
+
+  <div class="container" id="analyzer-container">
+
+    <header>
+      <h1>Security Analyzer</h1>
+      <p class="subtitle">// Deep inspection of password cryptographic strength</p>
+    </header>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('analyzer')">🔍 Analyzer</button>
+      <button class="tab" onclick="switchTab('generator')">⚡ Generator</button>
+      <button class="tab" onclick="switchTab('cracker')">💀 Cracker Demo</button>
+      <button class="tab" onclick="switchTab('tips')">🛡️ Security Tips</button>
+    </div>
+
+    <!-- ===== ANALYZER PANEL ===== -->
+    <div id="panel-analyzer" class="panel active">
+
+      <div class="input-card">
+        <div class="input-label">⌨ Enter Password</div>
+        <div class="input-wrapper">
+          <input type="password" class="pwd-input" id="mainInput" placeholder="Type your password..." oninput="analyzePassword(this.value)" autocomplete="off" spellcheck="false">
+          <div class="input-actions">
+            <button class="icon-btn" id="toggleVis" onclick="toggleVisibility()" title="Show/Hide">👁</button>
+            <button class="icon-btn" onclick="copyToClipboard(document.getElementById('mainInput').value)" title="Copy">📋</button>
+            <button class="icon-btn" onclick="clearInput()" title="Clear">✕</button>
+          </div>
+        </div>
+
+        <div class="strength-section">
+          <div class="strength-header">
+            <span class="strength-label">Strength</span>
+            <span class="strength-text" id="strengthText">—</span>
+          </div>
+          <div class="strength-segments">
+            <div class="seg" id="s1"></div>
+            <div class="seg" id="s2"></div>
+            <div class="seg" id="s3"></div>
+            <div class="seg" id="s4"></div>
+            <div class="seg" id="s5"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-grid" id="metricsGrid">
+        <div class="metric-card accent">
+          <div class="metric-icon">🎯</div>
+          <div class="metric-val" id="scoreVal">0</div>
+          <div class="metric-key">Score / 100</div>
+        </div>
+        <div class="metric-card cyan">
+          <div class="metric-icon">📏</div>
+          <div class="metric-val" id="lengthVal">0</div>
+          <div class="metric-key">Length</div>
+        </div>
+        <div class="metric-card green">
+          <div class="metric-icon">🔢</div>
+          <div class="metric-val" id="entropyVal">0</div>
+          <div class="metric-key">Entropy (bits)</div>
+        </div>
+        <div class="metric-card orange">
+          <div class="metric-icon">🌐</div>
+          <div class="metric-val" id="charsetVal">0</div>
+          <div class="metric-key">Charset Size</div>
+        </div>
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-card">
+          <div class="card-title">Requirements Check</div>
+          <ul class="req-list">
+            <li class="req-item" id="req-len"><span class="req-icon">✓</span>At least 12 characters</li>
+            <li class="req-item" id="req-upper"><span class="req-icon">✓</span>Uppercase letters</li>
+            <li class="req-item" id="req-lower"><span class="req-icon">✓</span>Lowercase letters</li>
+            <li class="req-item" id="req-digit"><span class="req-icon">✓</span>Numbers</li>
+            <li class="req-item" id="req-special"><span class="req-icon">✓</span>Special characters</li>
+          </ul>
+        </div>
+        <div class="analysis-card">
+          <div class="card-title">Entropy Analysis</div>
+          <div class="entropy-display">
+            <div class="entropy-row"><span class="entropy-key">Bits of entropy</span><span class="entropy-val" id="entropyBits">0 bits</span></div>
+            <div class="entropy-row"><span class="entropy-key">Complexity class</span><span class="entropy-val" id="complexClass">—</span></div>
+            <div class="entropy-row"><span class="entropy-key">Character pool</span><span class="entropy-val" id="charPool">—</span></div>
+            <div class="entropy-row"><span class="entropy-key">Guessing resistance</span><span class="entropy-val" id="guessRes">—</span></div>
+            <div class="entropy-row"><span class="entropy-key">Random equivalence</span><span class="entropy-val" id="randEquiv">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis-card" style="margin-bottom:16px;">
+        <div class="card-title">Character Map</div>
+        <div class="char-map" id="charMap"></div>
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-card">
+          <div class="card-title">Pattern Detection</div>
+          <div class="pattern-list" id="patternList">
+            <div class="pattern-chip"><span class="chip-dot" style="background:var(--text3)"></span><span>Enter password...</span></div>
+          </div>
+        </div>
+        <div class="analysis-card">
+          <div class="card-title">Suggestions</div>
+          <div class="suggestions-list" id="suggList">
+            <div class="suggestion">💡 Start typing...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Crack Time Estimates</div>
+      <div class="crack-grid" id="crackGrid"></div>
+
+    </div>
+
+    <!-- ===== GENERATOR PANEL ===== -->
+    <div id="panel-generator" class="panel">
+      <div class="gen-card">
+        <div class="section-title">Password Generator</div>
+        <div class="gen-controls">
+          <div class="ctrl-group">
+            <div class="ctrl-label">Length</div>
+            <div class="ctrl-row">
+              <input type="range" id="genLen" min="8" max="64" value="16" oninput="document.getElementById('genLenVal').textContent=this.value; generatePassword()">
+              <span class="range-val" id="genLenVal">16</span>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-label">Batch Count</div>
+            <div class="ctrl-row">
+              <input type="range" id="batchCount" min="1" max="10" value="5" oninput="document.getElementById('batchVal').textContent=this.value; generatePassword()">
+              <span class="range-val" id="batchVal">5</span>
+            </div>
+          </div>
+        </div>
+        <div class="toggle-group" style="margin-bottom:20px;">
+          <div class="toggle-item on" data-set="upper" onclick="toggleCharSet(this)"><span class="toggle-check">✓</span>A-Z</div>
+          <div class="toggle-item on" data-set="lower" onclick="toggleCharSet(this)"><span class="toggle-check">✓</span>a-z</div>
+          <div class="toggle-item on" data-set="digits" onclick="toggleCharSet(this)"><span class="toggle-check">✓</span>0-9</div>
+          <div class="toggle-item on" data-set="special" onclick="toggleCharSet(this)"><span class="toggle-check">✓</span>!@#</div>
+        </div>
+        <div class="gen-output">
+          <div class="gen-result" id="genResult">Click Generate →</div>
+          <button class="icon-btn" onclick="copyToClipboard(document.getElementById('genResult').textContent)" style="width:50px;">📋</button>
+        </div>
+        <button class="btn-primary" onclick="generatePassword()" style="margin-top:16px;">⚡ Generate New</button>
+      </div>
+      <div class="gen-batch" id="genBatch"></div>
+    </div>
+
+    <!-- ===== CRACKER DEMO PANEL ===== -->
+    <div id="panel-cracker" class="panel">
+      <div class="breach-card">
+        <div class="section-title">Cracker Simulation</div>
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <input type="password" class="pwd-input" id="crackerInput" placeholder="Password to crack..." style="flex:1;">
+          <button class="btn-primary" onclick="startCrackDemo()">💀 Run</button>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card red"><div class="metric-val" id="crackAttempts">0</div><div class="metric-key">Attempts</div></div>
+          <div class="metric-card orange"><div class="metric-val" id="crackElapsed">0s</div><div class="metric-key">Time</div></div>
+        </div>
+        <div class="attack-list" id="attackList"></div>
+        <div class="terminal" id="terminal"></div>
+      </div>
+    </div>
+
+    <!-- ===== TIPS PANEL ===== -->
+    <div id="panel-tips" class="panel">
+      <div class="section-title">Security Wisdom</div>
+      <div class="tips-grid" id="tipsGrid"></div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">PASS<span>GUARD</span> PRO</div>
+      <div class="footer-links">
+        <a href="#analyzer">Analyzer</a>
+        <a href="#generator">Generator</a>
+        <a href="#tips">Privacy</a>
+        <a href="https://github.com">GitHub</a>
+      </div>
+      <p class="copyright">&copy; 2026 PassGuard Pro. Educational Cybersecurity Tool.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Action Successful</span>
+  </div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
